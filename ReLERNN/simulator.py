@@ -71,7 +71,7 @@ class Simulator(object):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(self.seed)
+            random.seed(int(args.seed)))
             np.random.seed(self.seed)
 
 

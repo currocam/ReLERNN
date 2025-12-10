@@ -21,7 +21,7 @@ def main():
     ## Set seed
     if args.seed:
         os.environ['PYTHONHASHSEED']=str(args.seed)
-        random.seed(args.seed)
+        random.seed(int(args.seed))
         np.random.seed(args.seed)
     
     
