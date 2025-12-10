@@ -20,7 +20,7 @@ setup(name='ReLERNN',
           "scikit-learn>=0.22.1",
           "matplotlib>=3.1.3",
           "scikit-allel>=1.2.1",
-          "tensorflow==2.15.0"],
+          "tensorflow==2.15.1"],
       scripts=[
             "ReLERNN/ReLERNN_SIMULATE",
             "ReLERNN/ReLERNN_SIMULATE_POOL",
