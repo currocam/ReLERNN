@@ -20,15 +20,15 @@ def main():
     parser.add_argument('--gpuID',dest='gpuID',help='Identifier specifying which GPU to use', type=int, default = 0)
     parser.add_argument('-s','--seed',dest='seed',help='Random seed',type=int,default=None)
     args = parser.parse_args()
-    
-    
+
+
     ## Set seed
     if args.seed:
         os.environ['PYTHONHASHSEED']=str(args.seed)
         random.seed(int(args.seed))
         np.random.seed(args.seed)
 
-    
+
     ## Set up the directory structure to store the simulations data.
     if not args.outDir:
         print("Warning: No project directory found, using current working directory.")
@@ -86,8 +86,8 @@ def main():
             batchSize = args.bso
         else:
             batchSize = wins[i][6]
-        
-        
+
+
         ## Set network parameters
         bds_pred_params = {
             'INFO':DsInfoDir,
@@ -114,7 +114,7 @@ def main():
 
         ### Define sequence batch generator
         vcf_gen = VCFBatchGenerator(**bds_pred_params)
-        
+
 
         ## Load trained model and make predictions on VCF data
         pred_resultFile = os.path.join(projectDir,wins[i][0]+".CHPREDICT.txt")
@@ -128,7 +128,7 @@ def main():
                 batchSize=batchSize,
                 gpuID=args.gpuID)
 
-    
+
         ## Combine chromosome predictions in whole genome prediction file and rm chromosome files
     genPredFILE=os.path.join(projectDir,bn.replace(".vcf",".PREDICT.txt"))
     ct=0

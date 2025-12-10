@@ -18,14 +18,14 @@ def main():
     parser.add_argument('--gpuID',dest='gpuID',help='Identifier specifying which GPU to use', type=int, default = 0)
     parser.add_argument('-s','--seed',dest='seed',help='Random seed',type=int,default=None)
     args = parser.parse_args()
-    
-    
+
+
     ## Set seed
     if args.seed:
         os.environ['PYTHONHASHSEED']=str(args.seed)
         random.seed(int(args.seed))
         np.random.seed(args.seed)
-    
+
 
     ## Set up the directory structure to store the simulations data.
     if not args.outDir:
@@ -87,10 +87,10 @@ def main():
         else:
             batchSize = wins[i][6]
 
-        
+
         batchPars = pickle.load(open(os.path.join(networkDir,"batchPars.p"),"rb"))
         normType = batchPars["targetNormalization"]
-    
+
 
         ## Set network parameters
         bds_pred_params = {

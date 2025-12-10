@@ -71,7 +71,7 @@ class Simulator(object):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(int(args.seed)))
+            random.seed(int(args.seed))
             np.random.seed(self.seed)
 
 
@@ -86,7 +86,7 @@ class Simulator(object):
         RR = self.rho[simNum]
         SEED = self.seed[simNum]
         os.environ['PYTHONHASHSEED']=str(SEED)
-        random.seed(SEED)
+        random.seed(int(args.seed))
         np.random.seed(SEED)
 
         if self.hotspots:

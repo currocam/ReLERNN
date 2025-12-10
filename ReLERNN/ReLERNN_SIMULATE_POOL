@@ -30,22 +30,22 @@ def main():
     parser.add_argument('--nVali',dest='nVali',help='Number of validation examples to simulate',type=int,default=1000)
     parser.add_argument('--nTest',dest='nTest',help='Number of test examples to simulate',type=int,default=1000)
     args = parser.parse_args()
-    
-    
+
+
     ## Set seed
     if args.seed:
         os.environ['PYTHONHASHSEED']=str(args.seed)
         random.seed(int(args.seed))
         np.random.seed(args.seed)
-    
-    
+
+
     ## Set number of cores
     if args.nCPU:
         nProc = args.nCPU
     else:
         nProc = mp.cpu_count()
-    
-    
+
+
     ## Ensure all required arguments are provided
     if not args.samD:
         print("Error: assumed sample depth must be provided")
@@ -59,7 +59,7 @@ def main():
     else:
         projectDir = args.outDir
     if not args.mask:
-        print("Warning: no accessibility mask found. All sites in the genome are assumed to be accessible.") 
+        print("Warning: no accessibility mask found. All sites in the genome are assumed to be accessible.")
     if args.dem:
         demHist = check_demHist(args.dem)
         if demHist == -9:
@@ -71,7 +71,7 @@ def main():
     else:
         print("Warning: no demographic history file found. All training data will be simulated under demographic equilibrium.")
         demHist = 0
-    
+
 
     ## Set up the directory structure to store the simulations data.
     time.sleep(5)
@@ -87,7 +87,7 @@ def main():
         if not os.path.exists(p):
             os.makedirs(p)
 
-    
+
     ## Read the genome file
     chromosomes = []
     with open(args.genome, "r") as fIN:
@@ -97,9 +97,9 @@ def main():
                 print("Error: genome file must be formatted as a bed file (i.e.'chromosome     start     end')")
                 sys.exit(1)
             chromosomes.append("{}:{}-{}".format(ar[0],ar[1],ar[2]))
-   
 
-    ## Pass params to the manager    
+
+    ## Pass params to the manager
     manager_params = {
             'pool':args.pool,
             'mask':args.mask,
@@ -112,23 +112,23 @@ def main():
             'seed':args.seed
               }
     pool_manager = Manager(**manager_params)
-    
-    
+
+
     ## Split the pool file
     pool_manager.splitPOOL(nProc=nProc)
-    
+
 
     ## Calculate nSites per window
     wins, nSamps, maxS, maxLen = pool_manager.countSitesPOOL(samD=args.samD, nProc=nProc)
 
-    
+
     ## Prepare the accessibility mask
     if args.mask:
         mask_fraction, win_masks = pool_manager.maskWins(wins=wins, maxLen=maxLen, nProc=nProc)
     else:
         mask_fraction, win_masks = 0.0, None
 
-    
+
     ## Define parameters for msprime simulation
     print("Simulating with window size = {} bp.".format(maxLen))
     a=0

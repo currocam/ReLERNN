@@ -33,22 +33,22 @@ def main():
     parser.add_argument('--nVali',dest='nVali',help='Number of validation examples to simulate',type=int,default=1000)
     parser.add_argument('--nTest',dest='nTest',help='Number of test examples to simulate',type=int,default=1000)
     args = parser.parse_args()
-    
+
 
     ## Set seed
     if args.seed:
         os.environ['PYTHONHASHSEED']=str(args.seed)
-        random.seed(args.seedrandom.seed(int(args.seed)))
+        random.seed(int(args.seed))
         np.random.seed(args.seed)
-    
+
 
     ## Set number of cores
     if args.nCPU:
         nProc = args.nCPU
     else:
         nProc = mp.cpu_count()
-    
-    
+
+
     ## Ensure all required arguments are provided
     if not args.vcf.endswith(".vcf"):
         print('Error: VCF file must end in extension ".vcf"')
@@ -59,7 +59,7 @@ def main():
     else:
         projectDir = args.outDir
     if not args.mask:
-        print("Warning: no accessibility mask found. All sites in the genome are assumed to be accessible.") 
+        print("Warning: no accessibility mask found. All sites in the genome are assumed to be accessible.")
     if args.dem:
         demHist = check_demHist(args.dem)
         if demHist == -9:
@@ -81,8 +81,8 @@ def main():
         time.sleep(10)
     else:
         time.sleep(5)
-    
-    
+
+
     ## Set up the directory structure to store the simulations data.
     trainDir = os.path.join(projectDir,"train")
     valiDir = os.path.join(projectDir,"vali")
@@ -96,7 +96,7 @@ def main():
         if not os.path.exists(p):
             os.makedirs(p)
 
-    
+
     ## Read the genome file
     chromosomes = []
     with open(args.genome, "r") as fIN:
@@ -106,9 +106,9 @@ def main():
                 print("Error: genome file must be formatted as a bed file (i.e.'chromosome     start     end')")
                 sys.exit(1)
             chromosomes.append("{}:{}-{}".format(ar[0],ar[1],ar[2]))
-   
 
-    ## Pass params to the vcf manager    
+
+    ## Pass params to the vcf manager
     manager_params = {
             'vcf':args.vcf,
             'mask':args.mask,
@@ -122,11 +122,11 @@ def main():
             'seed':args.seed
               }
     vcf_manager = Manager(**manager_params)
-    
-    
+
+
     ## Split the VCF file
     vcf_manager.splitVCF(nProc=nProc)
-    
+
 
     ## Calculate nSites per window
     wins, nSamps, maxS, maxLen = vcf_manager.countSites(nProc=nProc)
@@ -137,8 +137,8 @@ def main():
         mask_fraction, win_masks = vcf_manager.maskWins(wins=wins, maxLen=maxLen, nProc=nProc)
     else:
         mask_fraction, win_masks = 0.0, None
-    
-    
+
+
     ## Prepare the missing data mask
     md_mask, mask_files = None, []
     for FILE in glob.glob(os.path.join(vcfDir, "*_md_mask.hdf5")):
@@ -150,8 +150,8 @@ def main():
             md_mask.append(hf["mask"][:])
     if md_mask:
         md_mask = np.concatenate(md_mask)
-    
-    
+
+
     ## Define parameters for msprime simulation
     print("Simulating with window size = {} bp.".format(maxLen))
     a=0
