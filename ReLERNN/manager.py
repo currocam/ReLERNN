@@ -46,7 +46,7 @@ class Manager(object):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(int(args.seed))
+            random.seed(self.seed)
             np.random.seed(self.seed)
 
 

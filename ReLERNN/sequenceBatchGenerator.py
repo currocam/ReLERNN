@@ -73,7 +73,7 @@ class SequenceBatchGenerator(tf.keras.utils.Sequence):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(int(args.seed))
+            random.seed(self.seed)
             np.random.seed(self.seed)
 
         if(targetNormalization != None):
@@ -381,7 +381,7 @@ class VCFBatchGenerator(tf.keras.utils.Sequence):
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
 
-            random.seed(int(args.seed))
+            random.seed(self.seed)
 
             np.random.seed(self.seed)
 
@@ -434,7 +434,7 @@ class VCFBatchGenerator(tf.keras.utils.Sequence):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(int(args.seed))
+            random.seed(self.seed)
             np.random.seed(self.seed)
 
         #def __getitem__(self, idx):
@@ -531,7 +531,7 @@ class POOLBatchGenerator(tf.keras.utils.Sequence):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(int(args.seed))
+            random.seed(self.seed)
             np.random.seed(self.seed)
 
     def padFqs(self,haplotypes,positions,maxSNPs=None,frameWidth=0,center=False):
@@ -614,7 +614,7 @@ class POOLBatchGenerator(tf.keras.utils.Sequence):
 
         if self.seed:
             os.environ['PYTHONHASHSEED']=str(self.seed)
-            random.seed(int(args.seed))
+            random.seed(self.seed)
             np.random.seed(self.seed)
 
         GT=self.GT
